@@ -2,3 +2,8 @@
   border: 1px solid green;
   border-radius: 50%;
 }
+input {
+  font-size: 30px;
+  display: flex;
+  flex-direction: column;
+}

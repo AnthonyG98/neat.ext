@@ -1,12 +1,27 @@
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Login } from "./components/Login";
-function App() {
-  //add container to body
-  // const insertNotif = () => {
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import axios from "axios";
+import { useState } from "react";
 
-  //   body.appendChild(".ext-notification-container");
-  // };
+function App() {
+  let url = "http://localhost:3001";
+
+  //React state
+  const [username, setUsername] = useState();
+  const [password, setPassword] = useState();
+
+  const onLogin = () => {
+    const loginData = {
+      username: username,
+      password: password,
+    };
+    axios.post(`${url}/users/login`, loginData).then((response) => {
+      if (response.data.error) {
+        loginErrText.innerText = response.data.error;
+      }
+    });
+  };
+
   //executes extension functionality
   let head = document.createElement("h1");
 
@@ -21,14 +36,26 @@ function App() {
   };
   return (
     <>
-      {/* <Router>
-        <Routes>
-          <Route path="/" element={<Login />} />
-        </Routes>
-      </Router> */}
-      <div className="app" onLoad={test}>
-        {/* <h1 id="notif-container">hey</h1> */}
-        <h1>You have 0 assignmnents with thus site</h1>
+      <div className="login-container">
+        <div className="login-entry-container">
+          <div className="login-entry">
+            <input
+              type="text"
+              className="login-input"
+              placeholder="username"
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <input
+              type="password"
+              className="login-input"
+              placeholder="password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <button className="login-btn" onClick={() => onLogin()}>
+              LOGIN
+            </button>
+          </div>
+        </div>
       </div>
     </>
   );
