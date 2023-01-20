@@ -1,12 +1,11 @@
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
 
 function App() {
   let url = "http://localhost:3001";
 
-  //React state
+  // React state
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
 
@@ -18,19 +17,22 @@ function App() {
     axios.post(`${url}/users/login`, loginData).then((response) => {
       if (response.data.error) {
         loginErrText.innerText = response.data.error;
+      } else {
+        // chrome.storage.sync({ id: response.data.id }, function () {
+        //   console.log("Saved");
+        // });
+        test(response.data.id);
       }
     });
   };
 
   //executes extension functionality
-  let head = document.createElement("h1");
-
-  const test = () => {
+  const test = (ping) => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       const activeTabId = tabs[0].id;
       chrome.scripting.executeScript({
         target: { tabId: activeTabId },
-        function: () => document.body.appendChild(head),
+        function: alert(ping),
       });
     });
   };
@@ -51,7 +53,7 @@ function App() {
               placeholder="password"
               onChange={(e) => setPassword(e.target.value)}
             />
-            <button className="login-btn" onClick={() => onLogin()}>
+            <button className="login-btn" onClick={onLogin}>
               LOGIN
             </button>
           </div>
