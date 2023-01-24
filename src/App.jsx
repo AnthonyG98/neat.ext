@@ -18,9 +18,10 @@ function App() {
       if (response.data.error) {
         loginErrText.innerText = response.data.error;
       } else {
-        // chrome.storage.sync({ id: response.data.id }, function () {
-        //   console.log("Saved");
-        // });
+        chrome.storage.sync.set({ key: response.data.id }).then(() => {
+          alert(`Your response is ${response.data.id}`);
+        });
+
         test(response.data.id);
       }
     });
